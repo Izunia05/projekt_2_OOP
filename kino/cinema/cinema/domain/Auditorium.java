@@ -2,6 +2,8 @@ package cinema.domain;
 
 public abstract class Auditorium {
 
+    private int miejscaWRzedzie;
+
     private String nazwa;
     private int liczbaRzedow;
     private String uklad;
@@ -10,6 +12,10 @@ public abstract class Auditorium {
         this.nazwa = nazwa;
         this.liczbaRzedow = liczbaRzedow;
         this.uklad = uklad;
+    }
+
+    public int getMiejscaWRzedzie() {
+        return miejscaWRzedzie;
     }
 
     public String getNazwa() {

@@ -52,6 +52,22 @@ public class Show implements Bookable {
         throw new IllegalStateException("Brak rezerwacji do anulowania.");
     }
 
+    public List<Seat> getMiejsca() {
+        return miejsca;
+    }
+
+    public String getFilm() {
+        return film;
+    }
+
+    public String getOpis() {
+        return film + " (" + czasStartu.toString().replace("T", " ") + ")";
+    }
+
+    public Auditorium getSala() {
+        return sala;
+    }
+
     @Override
     public boolean isAvailable() {
         return miejsca.stream().anyMatch(Seat::isAvailable);

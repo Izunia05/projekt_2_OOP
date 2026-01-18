@@ -30,7 +30,18 @@ public class Seat implements Bookable {
         }
         zajete = false;
     }
+    public int getRzad() {
+        return rzad;
+    }
 
+    public int getMiejsce() {
+        return miejsce;
+    }
+
+    @Override
+    public String toString() {
+        return "Rząd " + rzad + ", M" + miejsce;
+    }
     @Override
     public boolean isAvailable() {
         return !zajete;
