@@ -20,4 +20,9 @@ public class StandardAuditorium extends Auditorium{
     public void pokazSiatkeMiejsc() {
         System.out.println("Siatka miejsc w sali standardowej: " + getLiczbaRzedow() + " rzędów, po " + miejscaWRzedzie + " miejsc.");
     }
+
+    @Override
+    public double getBasePrice() {
+        return 20.0; // Przykładowa podstawowa cena biletu dla sali standardowej
+    }
 }

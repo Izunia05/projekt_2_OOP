@@ -31,6 +31,7 @@ public abstract class Auditorium {
     }
 
     public abstract void pokazSiatkeMiejsc();
+    public abstract double getBasePrice();
 }
 
 

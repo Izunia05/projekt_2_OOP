@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import cinema.domain.Auditorium;
-import cinema.domain.StandardAuditorium;
 import cinema.domain.IMAXAuditorium;
+import cinema.domain.PricingStrategy;
 
 public class Main {
     public static void main(String[] args) {
@@ -22,7 +22,8 @@ public class Main {
         sala2.pokazSiatkeMiejsc();
 
         SeatMapService mapService = new SeatMapService();
-        TicketService ticketService = new TicketService();
+        PricingStrategy pricingStrategy = PricingStrategy.weekendPricing();
+        TicketService ticketService = new TicketService(pricingStrategy);
         ReportService reportService = new ReportService();
 
         System.out.println("=== 1. TWORZENIE SAL (2 sale) ===");

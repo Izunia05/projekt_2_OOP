@@ -1,9 +1,38 @@
 package cinema.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import cinema.domain.Auditorium;
+import cinema.domain.PremiumTicket;
+import cinema.domain.PricingStrategy;
 import cinema.domain.Seat;
 import cinema.domain.Show;
+import cinema.domain.StandardTicket;
+import cinema.domain.Ticket;
 
 public class TicketService {
+    private final List<Show> shows;
+    private final List<Ticket> soldTickets;
+    private final PricingStrategy pricingStrategy;
+
+    public TicketService(PricingStrategy pricingStrategy) {
+        this.shows = new ArrayList<>();
+        this.soldTickets = new ArrayList<>();
+        this.pricingStrategy = pricingStrategy;
+    }
+
+    public void dodajSeans(Show seans) {
+        if (seans == null) {
+            throw new IllegalArgumentException("Seans nie może być null");
+        }
+        shows.add(seans);
+        System.out.println("✅ Dodano seans: " + seans.getOpis());
+    }
+
+    public List<Show> getSeanse() {
+        return new ArrayList<>(shows);
+    }
 
     // Metoda rezerwacji konkretnego miejsca
     public void rezerwujBilet(Show seans, int rzad, int numerMiejsca) {
@@ -37,6 +66,35 @@ public class TicketService {
         }
     }
 
+        // Sprzedaż biletu (na podstawie zarezerwowanego lub wolnego miejsca)
+    public Ticket sprzedajBilet(Show seans, int rzad, int numerMiejsca, boolean premium) {
+        Seat miejsce = znajdzMiejsce(seans, rzad, numerMiejsca);
+        if (miejsce == null) {
+            throw new IllegalArgumentException("Nie ma takiego miejsca w sali (Rząd "
+                    + rzad + ", M " + numerMiejsca + ")");
+        }
+
+        if (!miejsce.isAvailable()) {
+            // Możesz chcieć tu dopuścić: RESERVED -> SOLD; jeśli tak, usuń ten warunek
+            System.out.println("Miejsce " + miejsce + " nie jest dostępne do sprzedaży");
+            return null;
+        }
+
+        Auditorium sala = seans.getSala();
+        double basePrice = pricingStrategy.calculatePrice(sala, seans.getStartTime());
+
+        Ticket ticket = premium
+                ? new PremiumTicket(seans, miejsce, basePrice)
+                : new StandardTicket(seans, miejsce, basePrice);
+
+        // oznaczamy miejsce jako sprzedane
+        miejsce.cancel();
+        soldTickets.add(ticket);
+
+        System.out.println("SPRZEDANO BILET: " + ticket);
+        return ticket;
+    }
+
     // Wyświetlanie mapy sali
     public void wyswietlStanSali(Show seans) {
         System.out.println("\nMapa sali na film: " + seans.getOpis());
@@ -62,5 +120,10 @@ public class TicketService {
             }
         }
         return null;
+    }
+
+    // Opcjonalne: statystyki sprzedaży
+    public List<Ticket> getSprzedaneBilety() {
+        return new ArrayList<>(soldTickets);
     }
 }

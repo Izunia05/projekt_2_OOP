@@ -30,6 +30,7 @@ public class Seat implements Bookable {
         }
         zajete = false;
     }
+    
     public int getRzad() {
         return rzad;
     }

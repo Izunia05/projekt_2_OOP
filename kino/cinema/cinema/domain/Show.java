@@ -72,4 +72,8 @@ public class Show implements Bookable {
     public boolean isAvailable() {
         return miejsca.stream().anyMatch(Seat::isAvailable);
     }
+
+    public LocalDateTime getStartTime() {
+        return czasStartu;
+    }
 }
