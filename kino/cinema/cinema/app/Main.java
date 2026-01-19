@@ -15,11 +15,14 @@ import cinema.domain.PricingStrategy;
 
 public class Main {
     public static void main(String[] args) {
-        Auditorium sala1 = new StandardAuditorium("Sala 1", 10);
+        Auditorium sala1 = new StandardAuditorium("Sala 1", 10, 10);
         Auditorium sala2 = new IMAXAuditorium("Sala IMAX", 15);
 
+       
         sala1.pokazSiatkeMiejsc();
         sala2.pokazSiatkeMiejsc();
+
+        System.out.println();
 
         SeatMapService mapService = new SeatMapService();
         PricingStrategy pricingStrategy = PricingStrategy.weekendPricing();
@@ -42,14 +45,14 @@ public class Main {
 
         // Seans 1: Matrix w małej sali (jutro o 18:00)
         List<Seat> miejscaMatrix = mapService.generujMape(salaMala);
-        Show seansMatrix = new Show("Matrix", salaMala, LocalDateTime.now().plusDays(1).withHour(18), miejscaMatrix);
+        Show seansMatrix = new Show("Matrix", salaMala, LocalDateTime.now().plusDays(1).withHour(18).withMinute(0), miejscaMatrix);
 
         // Seans 2: Avatar w dużej sali (jutro o 20:00)
         List<Seat> miejscaAvatar = mapService.generujMape(salaDuza);
-        Show seansAvatar = new Show("Avatar 2", salaDuza, LocalDateTime.now().plusDays(1).withHour(20), miejscaAvatar);
+        Show seansAvatar = new Show("Avatar 2", salaDuza, LocalDateTime.now().plusDays(1).withHour(20).withMinute(0), miejscaAvatar);
 
-        System.out.println("Seans 1: " + seansMatrix.getOpis());
-        System.out.println("Seans 2: " + seansAvatar.getOpis());
+        System.out.println("Seans 1: " + seansMatrix.getOpis() + " -> " + seansMatrix.getSala().getNazwa());
+        System.out.println("Seans 2: " + seansAvatar.getOpis() + " -> " + seansAvatar.getSala().getNazwa());
 
 
         System.out.println("\n=== 3. ROBIENIE REZERWACJI ===");
@@ -77,7 +80,7 @@ public class Main {
         reportService.eksportujDoCsv(seansMatrix, "raport_matrix.csv");
         reportService.eksportujDoCsv(seansAvatar, "raport_avatar.csv");
 
-        System.out.println("\n=== KONIEC DEMO ===");
+        System.out.println("\n=== KONIEC ===");
         System.out.println("Sprawdź pliki .csv w folderze głównym projektu!");
     }
 }

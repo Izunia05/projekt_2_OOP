@@ -2,6 +2,8 @@ package cinema.domain;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.time.format.DateTimeFormatter;
+
 
 public class Show implements Bookable {
 
@@ -61,7 +63,7 @@ public class Show implements Bookable {
     }
 
     public String getOpis() {
-        return film + " (" + czasStartu.toString().replace("T", " ") + ")";
+        return film + " (" + getStartTimeFormatted() + ")";
     }
 
     public Auditorium getSala() {
@@ -73,7 +75,14 @@ public class Show implements Bookable {
         return miejsca.stream().anyMatch(Seat::isAvailable);
     }
 
+    private static final DateTimeFormatter SHORT_DATE_TIME =
+        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"); // np. 2026-01-19 18:55
+
     public LocalDateTime getStartTime() {
         return czasStartu;
+    }
+
+    public String getStartTimeFormatted() {
+        return czasStartu.format(SHORT_DATE_TIME);
     }
 }
